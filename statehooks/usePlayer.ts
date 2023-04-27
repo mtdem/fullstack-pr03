@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { StageModel } from '../components/Stage';
 import { isIllegalMove, STAGE_HEIGHT, STAGE_WIDTH } from '../gameHelpers';
 import { TETROMINOS, randomTetromino } from '../tetrominos';
 
@@ -11,7 +12,7 @@ export type PlayerModel = {
 export const usePlayer = () => {
   const [player, setPlayer] = useState({} as PlayerModel);
 
-  const rotate = (matrix, dir) => {
+  const rotate = (matrix: PlayerModel['tetromino'], dir: number) => {
     // transpose
     const rotatedMatrix = matrix.map((_, index) =>
       matrix.map((col) => col[index])
@@ -21,7 +22,7 @@ export const usePlayer = () => {
     return rotatedMatrix.reverse();
   };
 
-  const playerRotate = (stage, dir) => {
+  const playerRotate = (stage: StageModel, dir: number) => {
     const clonedPlayer = JSON.parse(JSON.stringify(player));
     clonedPlayer.tetromino = rotate(clonedPlayer.tetromino, dir);
 

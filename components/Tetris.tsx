@@ -52,7 +52,7 @@ export default function Tetris() {
     'Controls: \n - S: go down \n - D: shift right \n - A: shift left \n - E: rotate clockwise \n - Q: rotate counterclockwise';
 
   const adjustedDroptime = (level: number) => {
-    return 1000 / (level + 1) + 300;
+    return 800 / level + 100;
   };
 
   const movePlayer = (dir: number) => {
@@ -64,7 +64,7 @@ export default function Tetris() {
   const startGame = () => {
     setStage(createStage());
     resetPlayer();
-    setDroptime(1000);
+    setDroptime(800);
     setEndGame(false);
     setScore(0);
     setNumRows(0);

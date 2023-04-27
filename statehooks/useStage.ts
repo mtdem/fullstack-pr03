@@ -12,16 +12,18 @@ export const useStage = (player: PlayerModel, resetPlayer: () => void) => {
 
     setClearedRows(0);
 
-    const rowSweep = (nextStage) => {
-      nextStage.reduce((acc, row) => {
+    const rowSweep = (nextStage: StageModel): StageModel => {
+      return nextStage.reduce((acc, row) => {
         if (row.findIndex((cell) => cell[0] === 0) === -1) {
           setClearedRows((prev) => prev + 1);
-          acc.unshift(new Array(nextStage[0].length).fill([0, 'clear']));
+          acc.unshift(
+            new Array(nextStage[0].length).fill([0, 'clear']) as SquareModel[]
+          );
           return acc;
         }
         acc.push(row);
         return acc;
-      }, []);
+      }, [] as StageModel);
     };
 
     const updateStage = (prev: StageModel): StageModel => {

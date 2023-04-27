@@ -1,3 +1,6 @@
+import { StageModel } from './components/Stage';
+import { PlayerModel } from './statehooks/usePlayer';
+
 export const STAGE_WIDTH = 12;
 export const STAGE_HEIGHT = 20;
 
@@ -6,9 +9,13 @@ export const createStage = () =>
   Array.from(Array(STAGE_HEIGHT), () => Array(STAGE_WIDTH).fill([0, 'clear']));
 
 // collision detection
-export const isIllegalMove = (player, stage, { x: moveX, y: moveY }) => {
-  for (let y = 0; y < player.tetromino.length; ++y) {
-    for (let x = 0; x < player.tetromino[y].length; ++x) {
+export const isIllegalMove = (
+  player: PlayerModel,
+  stage: StageModel,
+  { x: moveX, y: moveY }: { x: number; y: number }
+): boolean => {
+  for (let y = 0; y < player.tetromino.length; y += 1) {
+    for (let x = 0; x < player.tetromino[y].length; x += 1) {
       // check cell
       if (player.tetromino[y][x] !== 0) {
         if (
@@ -23,4 +30,5 @@ export const isIllegalMove = (player, stage, { x: moveX, y: moveY }) => {
       }
     }
   }
+  return false;
 };
