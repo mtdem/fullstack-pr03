@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Cell from './Cell';
+import Square from './Square';
 import styled from 'styled-components';
 
-const StageStyle = styled.div`
+const MapStyle = styled.div`
   display: grid;
   grid-template-rows: repeat(
     ${(props) => props.height},
@@ -18,10 +18,10 @@ const StageStyle = styled.div`
 
 export default function Stage({ stage }) {
   return (
-    <StageStyle width={stage[0].length} height={stage.length}>
+    <MapStyle width={stage[0].length} height={stage.length}>
       {stage.map((row) =>
-        row.map((cell, x) => <Cell key={x} type={cell[0]} />)
+        row.map((cell, x) => <Square key={x} type={cell[0]} />)
       )}
-    </StageStyle>
+    </MapStyle>
   );
 }

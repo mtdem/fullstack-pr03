@@ -2,7 +2,7 @@ import * as React from 'react';
 // components
 import Stage from './Stage';
 import Display from './Display';
-import PlayButton from './StartButton';
+import PlayButton from './PlayButton';
 // hooks
 import { useStage } from '../statehooks/useStage';
 import { usePlayer } from '../statehooks/usePlayer';
@@ -47,7 +47,7 @@ export default function Tetris() {
 
   // Controls String:
   const CONTROLS_STR =
-    'Controls:\n - S: go down\n - D: shift right\n - A: shift left\n - E: rotate clockwise\n - Q: rotate counterclockwise';
+    'Controls: \n - S: go down \n - D: shift right \n - A: shift left \n - E: rotate clockwise \n - Q: rotate counterclockwise';
 
   const adjustedDroptime = (level) => {
     return 1000 / (level + 1) + 300;
@@ -146,8 +146,10 @@ export default function Tetris() {
           )}
           <PlayButton callback={startGame} />
         </aside>
-        <Display gameOver={gameOver} text={CONTROLS_STR} />
       </TetrisStyle>
+      <div className="display-linebreak">
+        <Display gameOver={gameOver} text={CONTROLS_STR} />
+      </div>
     </TetrisController>
   );
 }
