@@ -2,7 +2,7 @@ import * as React from 'react';
 // components
 import Stage from './Stage';
 import Display from './Display';
-import StartButton from './StartButton';
+import PlayButton from './StartButton';
 // hooks
 import { useStage } from '../statehooks/useStage';
 import { usePlayer } from '../statehooks/usePlayer';
@@ -39,11 +39,15 @@ export const TetrisStyle = styled.div`
 export default function Tetris() {
   const [dropTime, setDroptime] = React.useState(null);
   const [gameOver, setGameOver] = React.useState(false);
-
+  // custom states
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, clearedRows] = useStage(player, resetPlayer);
   const [score, setScore, numRows, setNumRows, levels, setLevels] =
     useGameScoring(clearedRows);
+
+  // Controls String:
+  const CONTROLS_STR =
+    'Controls:\n - S: go down\n - D: shift right\n - A: shift left\n - E: rotate clockwise\n - Q: rotate counterclockwise';
 
   const adjustedDroptime = (level) => {
     return 1000 / (level + 1) + 300;
@@ -140,8 +144,9 @@ export default function Tetris() {
               <Display gameOver={gameOver} text={`Level: ${levels}`} />
             </div>
           )}
-          <StartButton callback={startGame} />
+          <PlayButton callback={startGame} />
         </aside>
+        <Display gameOver={gameOver} text={CONTROLS_STR} />
       </TetrisStyle>
     </TetrisController>
   );
