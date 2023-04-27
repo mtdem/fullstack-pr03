@@ -1,8 +1,21 @@
 import * as React from 'react';
-import Cell from './Cell';
+import styled from 'styled-components';
 
-import { StyledStartButton } from './styles/StyledStartButton';
+export const StartButtonStyle = styled.button`
+  box-sizing: borderbox;
+  margin: 0 0 20px 0;
+  padding: 20px;
+  min-height: 30px;
+  width: 100%;
+  border-radius: 20px;
+  border: none;
+  color: #222;
+  background: #333
+  font-size: 2rem;
+  outline: none;
+  cursor: pointer;
+`;
 
 export default function StartButton({ callback }) {
-  return <StyledStartButton onClick={callback}>Start Game</StyledStartButton>;
+  return <StartButtonStyle onClick={callback}>Start Game</StartButtonStyle>;
 }
