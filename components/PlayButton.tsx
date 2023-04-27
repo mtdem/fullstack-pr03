@@ -16,6 +16,10 @@ export const PlayButtonStyle = styled.button`
   cursor: pointer;
 `;
 
-export default function PlayButton({ callback }) {
+type Props = {
+  callback: () => void;
+};
+
+export default function PlayButton({ callback }: Props) {
   return <PlayButtonStyle onClick={callback}>Play</PlayButtonStyle>;
 }

@@ -37,23 +37,25 @@ export const TetrisStyle = styled.div`
 `;
 
 export default function Tetris() {
-  const [dropTime, setDroptime] = React.useState(null);
-  const [gameOver, setGameOver] = React.useState(false);
+  const [dropTime, setDroptime] = React.useState<null | number>(null);
+  const [endGame, setEndGame] = React.useState(false);
   // custom states
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, clearedRows] = useStage(player, resetPlayer);
   const [score, setScore, numRows, setNumRows, levels, setLevels] =
     useGameScoring(clearedRows);
 
+  const stageSize = React.useRef<HTMLDivElement>(null);
+
   // Controls String:
   const CONTROLS_STR =
     'Controls: \n - S: go down \n - D: shift right \n - A: shift left \n - E: rotate clockwise \n - Q: rotate counterclockwise';
 
-  const adjustedDroptime = (level) => {
+  const adjustedDroptime = (level: number) => {
     return 1000 / (level + 1) + 300;
   };
 
-  const movePlayer = (dir) => {
+  const movePlayer = (dir: number) => {
     if (!isIllegalMove(player, stage, { x: dir, y: 0 })) {
       updatePlayerPos({ x: dir, y: 0, collided: false });
     }
@@ -63,7 +65,7 @@ export default function Tetris() {
     setStage(createStage());
     resetPlayer();
     setDroptime(1000);
-    setGameOver(false);
+    setEndGame(false);
     setScore(0);
     setNumRows(0);
     setLevels(0);
@@ -79,7 +81,7 @@ export default function Tetris() {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
       if (player.pos.y < 1) {
-        setGameOver(true);
+        setEndGame(true);
         setDroptime(null);
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
@@ -91,8 +93,8 @@ export default function Tetris() {
     setDroptime(null);
   };
 
-  const continueDrop = ({ keyCode }) => {
-    if (!gameOver) {
+  const continueDrop = ({ keyCode }: { keyCode: number }): void => {
+    if (!endGame) {
       if (keyCode === 83) {
         // down
         setDroptime(adjustedDroptime(levels));
@@ -100,8 +102,14 @@ export default function Tetris() {
     }
   };
 
-  const move = ({ keyCode }) => {
-    if (!gameOver) {
+  const move = ({
+    keyCode,
+    repeat,
+  }: {
+    keyCode: number;
+    repeat: boolean;
+  }): void => {
+    if (!endGame) {
       if (keyCode === 65) {
         // left
         movePlayer(-1);
@@ -110,6 +118,7 @@ export default function Tetris() {
         movePlayer(1);
       } else if (keyCode === 83) {
         // down
+        if (repeat) return;
         dropPlayer();
       } else if (keyCode === 69) {
         // up (E) to shift clockwise
@@ -131,24 +140,25 @@ export default function Tetris() {
       tabIndex="0"
       onKeyDown={(e) => move(e)}
       onKeyUp={continueDrop}
+      ref={stageSize}
     >
       <TetrisStyle>
-        <Stage stage={stage} />
         <aside>
-          {gameOver ? (
-            <Display gameOver={gameOver} text="GAME OVER" />
+          {endGame ? (
+            <Display gameOver={endGame} text="GAME OVER" />
           ) : (
             <div>
-              <Display gameOver={gameOver} text={`Score : ${score}`} />
-              <Display gameOver={gameOver} text={`Rows: ${numRows}`} />
-              <Display gameOver={gameOver} text={`Level: ${levels}`} />
+              <Display gameOver={endGame} text={`Level: ${levels}`} />
+              <Display gameOver={endGame} text={`Rows: ${numRows}`} />
+              <Display gameOver={endGame} text={`Score : ${score}`} />
             </div>
           )}
           <PlayButton callback={startGame} />
         </aside>
+        <Stage stage={stage} />
       </TetrisStyle>
       <div className="display-linebreak">
-        <Display gameOver={gameOver} text={CONTROLS_STR} />
+        <Display gameOver={endGame} text={CONTROLS_STR} />
       </div>
     </TetrisController>
   );

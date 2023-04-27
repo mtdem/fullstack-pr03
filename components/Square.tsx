@@ -12,7 +12,11 @@ const SquareStyle = styled.div`
   border-top-color: rgba(${(props) => props.color}, 0.3);
 `;
 
-function Square({ type }) {
+type Props = {
+  type: keyof typeof TETROMINOS;
+};
+
+function Square({ type }: Props) {
   return <SquareStyle type={type} color={TETROMINOS[type].color} />;
 }
 

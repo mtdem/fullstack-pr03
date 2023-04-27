@@ -16,6 +16,11 @@ const DisplayStyle = styled.div`
   font-size: 1rem;
 `;
 
-export default function Display({ gameOver, text }) {
+type Props = {
+  gameOver?: boolean;
+  text: string;
+};
+
+export default function Display({ gameOver, text }: Props) {
   return <DisplayStyle gameOver={gameOver}>{text}</DisplayStyle>;
 }

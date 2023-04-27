@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
+import { SquareModel, StageModel } from '../components/Stage';
 import { createStage } from '../gameHelpers';
+import { PlayerModel } from './usePlayer';
 
-export const useStage = (player, resetPlayer) => {
+export const useStage = (player: PlayerModel, resetPlayer: () => void) => {
   const [stage, setStage] = useState(createStage());
   const [clearedRows, setClearedRows] = useState(0);
 
   useEffect(() => {
+    if (!player.pos) return;
+
     setClearedRows(0);
 
     const rowSweep = (nextStage) => {
@@ -20,10 +24,13 @@ export const useStage = (player, resetPlayer) => {
       }, []);
     };
 
-    const updateStage = (prev) => {
+    const updateStage = (prev: StageModel): StageModel => {
       // get new stage state
-      const next = prev.map((row) =>
-        row.map((cell) => (cell[1] === 'clear' ? [0, 'clear'] : cell))
+      const next = prev.map(
+        (row) =>
+          row.map((cell) =>
+            cell[1] === 'clear' ? [0, 'clear'] : cell
+          ) as SquareModel[]
       );
       // display tetromino
       player.tetromino.forEach((row, y) => {
@@ -45,7 +52,13 @@ export const useStage = (player, resetPlayer) => {
       return next;
     };
     setStage((prev) => updateStage(prev));
-  }, [player, resetPlayer]);
+  }, [
+    player.collided,
+    player.pos?.x,
+    player.pos?.y,
+    player.tetromino,
+    resetPlayer,
+  ]);
 
   return [stage, setStage, clearedRows] as const;
 };

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Square from './Square';
 import styled from 'styled-components';
+import { TETROMINOS } from '../tetrominos';
 
 const MapStyle = styled.div`
   display: grid;
@@ -16,7 +17,14 @@ const MapStyle = styled.div`
   background: #111;
 `;
 
-export default function Stage({ stage }) {
+export type SquareModel = [keyof typeof TETROMINOS, string];
+export type StageModel = SquareModel[][];
+
+type Props = {
+  stage: StageModel;
+};
+
+export default function Stage({ stage }: Props) {
   return (
     <MapStyle width={stage[0].length} height={stage.length}>
       {stage.map((row) =>
